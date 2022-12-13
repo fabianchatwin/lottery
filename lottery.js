@@ -1,4 +1,4 @@
-contractAddress = "0xe54A503767Eecbc96cbb23a478f07D6B4a1e6c26";
+contractAddress = "";
 
 window.addEventListener('load', async () => {
 	if (window.ethereum) {
@@ -15,28 +15,4 @@ window.addEventListener('load', async () => {
   contract = new web3.eth.Contract(abi, contractAddress);
   accounts = await web3.eth.getAccounts();
 });
-
-async function deposit() {
-	contract.methods.enter().send( { 
-		from: accounts[0], 
-		value: web3.utils.toWei("0.02") , 
-		gas: 300000 } );
-}
-
-async function checkBalance() {
-	$("#contractBalance").text("ba ba ba...");
-	$("#userBalance").text("ba ba ba...");
-	$("#players").text("ba ba ba...");
-	contractBalance = await web3.eth.getBalance(contractAddress);
-	$("#contractBalance").text(web3.utils.fromWei(contractBalance));
-	userBalance = await web3.eth.getBalance(accounts[0]);
-	$("#userBalance").text(web3.utils.fromWei(userBalance));
-	players = await contract.methods.theplayers().call();
-	$("#players").text(players);
-};
-
-async function pickWinner() {
-	contract.methods.pickWinner().send( { 
-		from: accounts[0] } );
-}
 
