@@ -1,63 +1,42 @@
-import abi from './lottery.json' assert { type: 'json' };
+contractAddress = "0xe54A503767Eecbc96cbb23a478f07D6B4a1e6c26";
 
-if (typeof window.ethereum !== 'undefined') {
-	// Instance web3 with the provided information
-	const web3 = new Web3(window.ethereum);
-  try {
-	// Request account access
-	await window.ethereum.enable();
-  } catch(e) {
-	// User denied access
-  }
-}
-
-async function start() {
-//const rpcURL = ''; // Your RCP URL goes here
-//const web3 = new Web3(rpcURL)
-
-const address = '0x21F2E2bA3A16ef67dE8CBb5fEDE25Ae19Da74D18'
-
-//const contract = new web3.eth.Contract(abi, address);
-/*
-contract.methods.totalSupply().call((err, result) => { console.log(result) });
-contract.methods.name().call((err, result) => { console.log(result) });
-contract.methods.symbol().call((err, result) => { console.log(result) });
-*/
-a = await web3.eth.getBbalance("0x21F2E2bA3A16ef67dE8CBb5fEDE25Ae19Da74D182");
-console.log(a);
-}
-start();
-
-/*
-async function initWeb3() {
+window.addEventListener('load', async () => {
 	if (window.ethereum) {
-		web3Provider = window.ethereum;
+		window.web3 = new Web3(ethereum);
 		try {
-			await window.ethereum.request({ method: "eth_requestAccounts" });;
-		} catch (err) {
-			alert("User denied account access");
+			await ethereum.enable();
+			console.log("user approved");
+		} catch (error) {
+			console.log("user rejected");
 		}
-	} else {
-		alert("I cannot connect to your wallet. Make sure you have a Polygon MATIC wallet connected.");
 	}
-	web3 = new Web3(web3Provider);
 
+  abi = JSON.parse( '[{"inputs":[],"name":"enter","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"pickWinner","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"theplayers","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"nonpayable","type":"function"}]' );
+  contract = new web3.eth.Contract(abi, contractAddress);
+  accounts = await web3.eth.getAccounts();
+});
 
-	await $.getJSON('lottery.json', function (data) {
-		KuoriciniDao = TruffleContract(data);
-		KuoriciniDao.setProvider(web3Provider);
-	});
-
-	try {
-		accounts = await web3.eth.getAccounts();
-		instance = await KuoriciniDao.deployed();
-		user = await instance.nameOf(accounts[0], { from: user.address });
-	} catch (err) {
-		console.log("Error reading account info!", err);
-	};
-	document.getElementById("userName").textContent = user.name;
+async function deposit() {
+	contract.methods.enter().send( { 
+		from: accounts[0], 
+		value: web3.utils.toWei("0.02") , 
+		gas: 300000 } );
 }
 
-initWeb3();
+async function checkBalance() {
+	$("#contractBalance").text("ba ba ba...");
+	$("#userBalance").text("ba ba ba...");
+	$("#players").text("ba ba ba...");
+	contractBalance = await web3.eth.getBalance(contractAddress);
+	$("#contractBalance").text(web3.utils.fromWei(contractBalance));
+	userBalance = await web3.eth.getBalance(accounts[0]);
+	$("#userBalance").text(web3.utils.fromWei(userBalance));
+	players = await contract.methods.theplayers().call();
+	$("#players").text(players);
+};
 
-*/
+async function pickWinner() {
+	contract.methods.pickWinner().send( { 
+		from: accounts[0] } );
+}
+
