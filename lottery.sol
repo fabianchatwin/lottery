@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 contract Lottery{
-    address[] public players;
+    address[] players;
 
     function enter() public payable{
         require(msg.value > .01 ether);
@@ -17,5 +17,9 @@ contract Lottery{
         uint index = random() % players.length;
         payable (players[index]).transfer(address(this).balance);
         players = new address[](0);
+    }
+
+    function theplayers() public view returns (address[] memory) {
+        return players;
     }
 }
