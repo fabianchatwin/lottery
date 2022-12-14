@@ -27,7 +27,3 @@ window.addEventListener('load', async function() {
   // ottieni l'indirizzo di chi si connette 
   accounts = await web3.eth.getAccounts();
 });
-
-function deposit(){
-	alert("funziona");
-}
