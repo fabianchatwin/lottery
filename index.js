@@ -16,27 +16,26 @@ window.addEventListener('load', async () => {
   accounts = await web3.eth.getAccounts();
 });
 
-async function deposit() {
-	contract.methods.enter().send( { 
-		from: accounts[0], 
-		value: web3.utils.toWei("0.02") , 
-		gas: 300000 } );
-}
-
-async function checkBalance() {
-	$("#contractBalance").text("ba ba ba...");
-	$("#userBalance").text("ba ba ba...");
-	$("#players").text("ba ba ba...");
+async function check() {
 	contractBalance = await web3.eth.getBalance(contractAddress);
-	$("#contractBalance").text(web3.utils.fromWei(contractBalance));
-	userBalance = await web3.eth.getBalance(accounts[0]);
-	$("#userBalance").text(web3.utils.fromWei(userBalance));
-	players = await contract.methods.theplayers().call();
-	$("#players").text(players);
-};
+	document.getElementById("contractBalance").textContent = web3.utils.fromWei(contractBalance);
 
-async function pickWinner() {
-	contract.methods.pickWinner().send( { 
-		from: accounts[0] } );
+	userBalance = await web3.eth.getBalance(accounts[0]);
+	document.getElementById("userBalance").textContent = web3.utils.fromWei(userBalance);
+	
+	players = await contract.methods.theplayers().call();
+	document.getElementById("theplayers").textContent = players;
 }
 
+async function deposit() {
+	await contract.methods.enter().send( { 
+		from: accounts[0],
+		value: web3.utils.toWei("0.02")
+	});
+}
+
+async function winner() {
+	await contract.methods.pickWinner().send( { 
+		from: accounts[0]
+	});
+}
