@@ -1,0 +1,27 @@
+body {
+    margin: 30px;
+    background-color: #faebd7;
+    font-family: sans-serif;
+}
+
+button {
+    width: 150px;
+    height: 40px;
+    border-radius: 10px;
+    border-width: 0px;
+    margin: 10px;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: darkgrey;
+}
+
+div {
+    float: right;
+}
+
+p {
+    font-weight: bold;
+    text-align: center;
+}
